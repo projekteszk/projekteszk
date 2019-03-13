@@ -1,5 +1,6 @@
 package projekteszk.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,23 +23,18 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String name;
     
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String type;
     
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String manufacturer;
     
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private Integer price;
     
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String desc;
 }
