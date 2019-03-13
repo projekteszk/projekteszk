@@ -1,0 +1,60 @@
+A kódot a https://app.quickdatabasediagrams.com/ oldalra másold be.
+
+user
+-
+id PK int
+card_id int FK - mohosz.card_id
+name string
+email string
+pass string
+role enum('QUEST','ADMIN')
+phone string
+address string
+
+order
+-
+id PK int
+user_id int FK >- user.id
+product_id int FK -< products.id 
+ticket_id int FK -< tickets.id
+start date
+end date
+
+products
+-
+id PK int
+name string
+type string
+manufacturer string
+price int
+desc string
+
+tickets
+-
+id PK int
+spot_id int FK >- spots.id
+type string
+price int
+
+spots
+-
+id PK int
+club_id int FK >- clubs.id
+name string
+desc string
+
+clubs
+-
+id PK int
+name string
+shire string
+
+mohosz
+-
+card_id PK int
+club_id int FK >- clubs.id
+name string
+card_issue date
+card_expiration date
+fishing_license_numb int
+is_disabled bool
