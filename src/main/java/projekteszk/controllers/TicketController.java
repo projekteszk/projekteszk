@@ -3,6 +3,7 @@ package projekteszk.controllers;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +23,20 @@ public class TicketController {
     private TicketRepository ticketRepository;
     
     @GetMapping("")
+    @Secured({ "ROLE_ADMIN" })
     public ResponseEntity<Iterable<Ticket>> getAll() {
         return ResponseEntity.ok(ticketRepository.findAll());
     }
     
     @PostMapping("")
+    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
     public ResponseEntity<Ticket> post(@RequestBody Ticket ticket) {
         ticket.setId(null);
         return ResponseEntity.ok(ticketRepository.save(ticket));
     }
     
     @DeleteMapping("/{id}")
+    @Secured({ "ROLE_ADMIN" })
     public ResponseEntity delete(@PathVariable Integer id) {
         Optional<Ticket> oTicket = ticketRepository.findById(id);
         if (!oTicket.isPresent()) {
