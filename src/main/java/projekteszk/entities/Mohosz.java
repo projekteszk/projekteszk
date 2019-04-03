@@ -21,12 +21,6 @@ public class Mohosz implements Serializable {
     
     @Id
     private Integer card_id;
-         
-    /*
-    @JoinColumn
-    @ManyToOne
-    private Club club;
-    */
     
     @Column(nullable = false)
     private String name;
@@ -44,6 +38,4 @@ public class Mohosz implements Serializable {
     
     @Column
     private Boolean is_disabled;
-    
-    
 }
