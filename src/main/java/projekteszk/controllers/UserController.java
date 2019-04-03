@@ -2,6 +2,7 @@ package projekteszk.controllers;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,14 +25,10 @@ import projekteszk.entities.User;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    
-    @GetMapping("")
-    @Secured({ "ROLE_ADMIN" })
-    public ResponseEntity<Iterable<User>> getAll() {
-        Iterable<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+    @Bean
+    private BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
     }
     
     @GetMapping("/{id}")
@@ -44,21 +42,37 @@ public class UserController {
         return ResponseEntity.ok(oUser.get());
     }
     
-    @DeleteMapping("/{id}")
+    @GetMapping("")
     @Secured({ "ROLE_ADMIN" })
-    public ResponseEntity delete(@PathVariable Integer id) {
-        Optional<User> oUser = userRepository.findById(id);
-        if (!oUser.isPresent()) {
-            return ResponseEntity.notFound().build();   
-        }
-            
-        userRepository.delete(oUser.get());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Iterable<User>> getAll() {
+        Iterable<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
     
-    @PutMapping("/{id}/to-admin")
+    @PostMapping("/register")
+    public ResponseEntity<User> post(@RequestBody User user) {
+        Optional<User> oUser = userRepository.findByName(user.getName());
+        if (oUser.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+        user.setId(null);
+        user.setPass(passwordEncoder().encode(user.getPass()));
+        user.setRole(oUser.get().getRole());
+        return ResponseEntity.ok(userRepository.save(user));
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody String username) {
+        Optional<User> oUser = userRepository.findByName(username);
+        if (!oUser.isPresent()) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(oUser.get());
+    }
+    
+    @PatchMapping("/{id}/to-admin")
     @Secured({ "ROLE_ADMIN" })
-    public ResponseEntity<User> putToAdmin(@PathVariable Integer id,
+    public ResponseEntity<User> patchToAdmin(@PathVariable Integer id,
                                               @RequestBody User user) {
         Optional<User> oUser = userRepository.findById(id);
         if (!oUser.isPresent()) {
@@ -87,24 +101,15 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(user));
     }
     
-    @PostMapping("/register")
-    public ResponseEntity<User> post(@RequestBody User user) {
-        Optional<User> oUser = userRepository.findByName(user.getName());
-        if (oUser.isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
-        user.setId(null);
-        user.setPass(passwordEncoder.encode(user.getPass()));
-        user.setRole(oUser.get().getRole());
-        return ResponseEntity.ok(userRepository.save(user));
-    }
-    
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody String username) {
-        Optional<User> oUser = userRepository.findByName(username);
+    @DeleteMapping("/{id}")
+    @Secured({ "ROLE_ADMIN" })
+    public ResponseEntity delete(@PathVariable Integer id) {
+        Optional<User> oUser = userRepository.findById(id);
         if (!oUser.isPresent()) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.notFound().build();   
         }
-        return ResponseEntity.ok(oUser.get());
+            
+        userRepository.delete(oUser.get());
+        return ResponseEntity.ok().build();
     }
 }
