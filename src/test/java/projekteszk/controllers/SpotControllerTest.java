@@ -22,33 +22,33 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import projekteszk.entities.Club;
-import projekteszk.repositories.ClubRepository;
+import projekteszk.entities.Spot;
+import projekteszk.repositories.SpotRepository;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value=ClubController.class, secure=false)
-public class ClubControllerTest {
+@WebMvcTest(value=SpotController.class, secure=false)
+public class SpotControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ClubRepository clubRepository;
+    private SpotRepository spotRepository;
     
     @Test
     public void testGetById() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        Spot mockSpot = new Spot();
+        mockSpot.setId(1);
+        mockSpot.setName("Teszt horgászhely");
+        mockSpot.setDesc("Ez csak egy teszt");
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(spotRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockSpot));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs/1")
+                .get("/api/spots/1")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(mockClub);
+        String exceptedJson = this.mapToJson(mockSpot);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
@@ -56,20 +56,20 @@ public class ClubControllerTest {
     
     @Test
     public void testGetByName() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        Spot mockSpot = new Spot();
+        mockSpot.setId(1);
+        mockSpot.setName("Teszt horgászhely");
+        mockSpot.setDesc("Ez csak egy teszt");
         
-        Mockito.when(clubRepository.findByName(Mockito.anyString()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(spotRepository.findByName(Mockito.anyString()))
+               .thenReturn(Optional.of(mockSpot));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs/search?name=Teszt Klub 1")
+                .get("/api/spots/search?name=Teszt Klub 1")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(mockClub);
+        String exceptedJson = this.mapToJson(mockSpot);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
@@ -77,29 +77,29 @@ public class ClubControllerTest {
     
     @Test
     public void testGetAll() throws Exception {
-        Club mockClub1 = new Club();
-        mockClub1.setId(1);
-        mockClub1.setName("Teszt Klub 1");
-        mockClub1.setShire("Hajdú-Bihar");
+        Spot mockSpot1 = new Spot();
+        mockSpot1.setId(1);
+        mockSpot1.setName("Teszt horgászhely 1");
+        mockSpot1.setDesc("Ez csak egy teszt");
         
-        Club mockClub2 = new Club();
-        mockClub2.setId(2);
-        mockClub2.setName("Teszt Klub 2");
-        mockClub2.setShire("Pest");
+        Spot mockSpot2 = new Spot();
+        mockSpot2.setId(2);
+        mockSpot2.setName("Teszt horgászhely 2");
+        mockSpot2.setDesc("Ez csak egy teszt");
         
-        List<Club> clubList = new ArrayList<>();
-        clubList.add(mockClub1);
-        clubList.add(mockClub2);
+        List<Spot> spotList = new ArrayList<>();
+        spotList.add(mockSpot1);
+        spotList.add(mockSpot2);
         
-        Mockito.when(clubRepository.findAll())
-               .thenReturn(clubList);
+        Mockito.when(spotRepository.findAll())
+               .thenReturn(spotList);
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs")
+                .get("/api/spots")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(clubList);
+        String exceptedJson = this.mapToJson(spotList);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
@@ -107,18 +107,18 @@ public class ClubControllerTest {
     
     @Test
     public void testPost() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        Spot mockSpot = new Spot();
+        mockSpot.setId(1);
+        mockSpot.setName("Teszt horgászhely");
+        mockSpot.setDesc("Ez csak egy teszt");
         
-        String inputInJson = this.mapToJson(mockClub);
+        String inputInJson = this.mapToJson(mockSpot);
         
-        Mockito.when(clubRepository.save(Mockito.any(Club.class)))
-               .thenReturn(mockClub);
+        Mockito.when(spotRepository.save(Mockito.any(Spot.class)))
+               .thenReturn(mockSpot);
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/api/clubs")
+                .post("/api/spots")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(inputInJson)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -133,18 +133,18 @@ public class ClubControllerTest {
     
     @Test
     public void testPut() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        Spot mockSpot = new Spot();
+        mockSpot.setId(1);
+        mockSpot.setName("Teszt horgászhely");
+        mockSpot.setDesc("Ez csak egy teszt");
         
-        String inputInJson = this.mapToJson(mockClub);
+        String inputInJson = this.mapToJson(mockSpot);
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(spotRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockSpot));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/api/clubs/1")
+                .put("/api/spots/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(inputInJson)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -158,16 +158,16 @@ public class ClubControllerTest {
     
     @Test
     public void testDelete() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        Spot mockSpot = new Spot();
+        mockSpot.setId(1);
+        mockSpot.setName("Teszt horgászhely");
+        mockSpot.setDesc("Ez csak egy teszt");
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(spotRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockSpot));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/api/clubs/1")
+                .delete("/api/spots/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         

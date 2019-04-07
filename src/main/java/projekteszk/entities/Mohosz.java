@@ -23,6 +23,9 @@ public class Mohosz implements Serializable {
     private Integer card_id;
     
     @Column(nullable = false)
+    private Integer club_id;
+    
+    @Column(nullable = false)
     private String name;
     
     @Column

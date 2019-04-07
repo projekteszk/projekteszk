@@ -22,33 +22,37 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import projekteszk.entities.Club;
-import projekteszk.repositories.ClubRepository;
+import projekteszk.entities.User;
+import projekteszk.repositories.UserRepository;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value=ClubController.class, secure=false)
-public class ClubControllerTest {
+@WebMvcTest(value=UserController.class, secure=false)
+public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ClubRepository clubRepository;
+    private UserRepository userRepository;
     
     @Test
     public void testGetById() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(userRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockUser));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs/1")
+                .get("/api/users/1")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(mockClub);
+        String exceptedJson = this.mapToJson(mockUser);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
@@ -56,20 +60,24 @@ public class ClubControllerTest {
     
     @Test
     public void testGetByName() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
         
-        Mockito.when(clubRepository.findByName(Mockito.anyString()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(userRepository.findByName(Mockito.anyString()))
+               .thenReturn(Optional.of(mockUser));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs/search?name=Teszt Klub 1")
+                .get("/api/users/search?name=Teszt Klub 1")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(mockClub);
+        String exceptedJson = this.mapToJson(mockUser);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
@@ -77,48 +85,62 @@ public class ClubControllerTest {
     
     @Test
     public void testGetAll() throws Exception {
-        Club mockClub1 = new Club();
-        mockClub1.setId(1);
-        mockClub1.setName("Teszt Klub 1");
-        mockClub1.setShire("Hajdú-Bihar");
+        User mockUser1 = new User();
+        mockUser1.setId(1);
+        mockUser1.setRole(User.Role.ROLE_USER);
+        mockUser1.setName("Teszt User 1");
+        mockUser1.setPass("pass");
+        mockUser1.setEmail("user@email.com");
+        mockUser1.setPhone("06301234567");
+        mockUser1.setAddress("1000 Teszt, Teszt utca 1.");
         
-        Club mockClub2 = new Club();
-        mockClub2.setId(2);
-        mockClub2.setName("Teszt Klub 2");
-        mockClub2.setShire("Pest");
+        User mockUser2 = new User();
+        mockUser2.setId(2);
+        mockUser2.setRole(User.Role.ROLE_USER);
+        mockUser2.setName("Teszt User 2");
+        mockUser2.setPass("pass");
+        mockUser2.setEmail("user@email.com");
+        mockUser2.setPhone("06301234567");
+        mockUser2.setEmail("1000 Teszt, Teszt utca 1.");
         
-        List<Club> clubList = new ArrayList<>();
-        clubList.add(mockClub1);
-        clubList.add(mockClub2);
+        List<User> userList = new ArrayList<>();
+        userList.add(mockUser1);
+        userList.add(mockUser2);
         
-        Mockito.when(clubRepository.findAll())
-               .thenReturn(clubList);
+        Mockito.when(userRepository.findAll())
+               .thenReturn(userList);
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/api/clubs")
+                .get("/api/users")
                 .accept(MediaType.APPLICATION_JSON);
         
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String exceptedJson = this.mapToJson(clubList);
+        String exceptedJson = this.mapToJson(userList);
         String outputInJson = result.getResponse().getContentAsString();
         
         assertThat(outputInJson).isEqualTo(exceptedJson);
     }
     
     @Test
-    public void testPost() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+    public void testPatchToAdmin() throws Exception {
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
         
-        String inputInJson = this.mapToJson(mockClub);
+        Mockito.when(userRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockUser));
         
-        Mockito.when(clubRepository.save(Mockito.any(Club.class)))
-               .thenReturn(mockClub);
+        mockUser.setRole(User.Role.ROLE_ADMIN);
+        
+        String inputInJson = this.mapToJson(mockUser);
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/api/clubs")
+                .patch("/api/users/1/to-admin")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(inputInJson)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -127,24 +149,27 @@ public class ClubControllerTest {
         MockHttpServletResponse response = result.getResponse();
         String outputInJson = response.getContentAsString();
         
-        assertThat(outputInJson).isEqualTo(inputInJson);
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
-    
+            
     @Test
     public void testPut() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
         
-        String inputInJson = this.mapToJson(mockClub);
+        String inputInJson = this.mapToJson(mockUser);
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(userRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockUser));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/api/clubs/1")
+                .put("/api/users/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(inputInJson)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -158,16 +183,20 @@ public class ClubControllerTest {
     
     @Test
     public void testDelete() throws Exception {
-        Club mockClub = new Club();
-        mockClub.setId(1);
-        mockClub.setName("Teszt Klub");
-        mockClub.setShire("Hajdú-Bihar");
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
         
-        Mockito.when(clubRepository.findById(Mockito.anyInt()))
-               .thenReturn(Optional.of(mockClub));
+        Mockito.when(userRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockUser));
         
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/api/clubs/1")
+                .delete("/api/users/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         
