@@ -9,5 +9,5 @@ import projekteszk.entities.User;
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Integer> {
     public Iterable<Order> findByUser(User user);
-    public Iterable<Order> findByTicket(Ticket tickets);
+    public Iterable<Order> findByTickets(Ticket tickets);
 }
