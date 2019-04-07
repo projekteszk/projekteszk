@@ -1,5 +1,6 @@
 package projekteszk.controllers;
 
+import java.util.Iterator;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import projekteszk.entities.Order;
 import projekteszk.entities.Ticket;
+import projekteszk.repositories.OrderRepository;
 import projekteszk.repositories.TicketRepository;
 
 @CrossOrigin
@@ -21,9 +25,11 @@ import projekteszk.repositories.TicketRepository;
 public class TicketController {
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     
     @GetMapping("")
-    @Secured({ "ROLE_ADMIN" })
+    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
     public ResponseEntity<Iterable<Ticket>> getAll() {
         return ResponseEntity.ok(ticketRepository.findAll());
     }
@@ -41,6 +47,12 @@ public class TicketController {
         Optional<Ticket> oTicket = ticketRepository.findById(id);
         if (!oTicket.isPresent()) {
             return ResponseEntity.notFound().build();   
+        }
+        
+        Iterable<Order> oOrder = orderRepository.findByTickets(oTicket.get());
+        Iterator<Order> it = oOrder.iterator();
+        while(it.hasNext()){
+            orderRepository.delete(it.next());   
         }
             
         ticketRepository.delete(oTicket.get());
