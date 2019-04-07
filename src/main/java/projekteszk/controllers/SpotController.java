@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import projekteszk.entities.Spot;
 import projekteszk.repositories.SpotRepository;
@@ -33,8 +34,8 @@ public class SpotController {
         return ResponseEntity.ok(oSpot.get());
     }
     
-    @GetMapping("/{name}")
-    public ResponseEntity<Spot> getByName(@PathVariable String name) {
+    @GetMapping("/")
+    public ResponseEntity<Spot> getByName(@RequestParam(value="name") String name) {
         Optional<Spot> oSpot = spotRepository.findByName(name);
         if (!oSpot.isPresent()) {
             return ResponseEntity.notFound().build();   

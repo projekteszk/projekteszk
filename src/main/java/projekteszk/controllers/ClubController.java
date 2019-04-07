@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import projekteszk.entities.Club;
 import projekteszk.repositories.ClubRepository;
@@ -33,8 +34,8 @@ public class ClubController {
         return ResponseEntity.ok(oClub.get());
     }
     
-    @GetMapping("/{name}")
-    public ResponseEntity<Club> getByName(@PathVariable String name) {
+    @GetMapping("/")
+    public ResponseEntity<Club> getByName(@RequestParam(value="name") String name) {
         Optional<Club> oClub = clubRepository.findByName(name);
         if (!oClub.isPresent()) {
             return ResponseEntity.notFound().build();   
