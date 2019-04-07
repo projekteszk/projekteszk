@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import projekteszk.entities.Order;
+import projekteszk.entities.User;
 import projekteszk.repositories.OrderRepository;
+import projekteszk.repositories.UserRepository;
 
 @CrossOrigin
 @RestController
@@ -21,11 +23,27 @@ import projekteszk.repositories.OrderRepository;
 public class OrderController {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
     
     @GetMapping("")
     @Secured({ "ROLE_ADMIN" })
     public ResponseEntity<Iterable<Order>> getAll() {
         return ResponseEntity.ok(orderRepository.findAll());
+    }
+    
+    @GetMapping("/{username}")
+    @Secured({ "ROLE_USER" })
+    public ResponseEntity<Iterable<Order>> get(@PathVariable String username) {
+        Optional<User> oUser = userRepository.findByName(username);
+        if (!oUser.isPresent()) {
+            System.out.println("-----");
+            System.out.println(username + " not found");
+            System.out.println("-----");
+            return ResponseEntity.badRequest().build();
+        }
+        Iterable<Order> orders = orderRepository.findByUser(oUser.get());
+        return ResponseEntity.ok(orders);
     }
     
     @PostMapping("")
