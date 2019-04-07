@@ -34,8 +34,8 @@ public class SpotController {
         return ResponseEntity.ok(oSpot.get());
     }
     
-    @GetMapping("/")
-    public ResponseEntity<Spot> getByName(@RequestParam(value="name") String name) {
+    @GetMapping("/search")
+    public ResponseEntity<Spot> getByName(@RequestParam String name) {
         Optional<Spot> oSpot = spotRepository.findByName(name);
         if (!oSpot.isPresent()) {
             return ResponseEntity.notFound().build();   
