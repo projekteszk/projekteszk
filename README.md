@@ -1,5 +1,7 @@
 # Projekt Eszközök beadandó
 
+[![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=dev)](https://travis-ci.com/madam97/projekteszk)
+
 ## Mappa tartalma
 
 - docs: ebben a mappában vannak az oldalhoz szükséges dokumentumok
