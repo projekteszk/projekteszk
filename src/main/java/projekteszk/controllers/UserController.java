@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import projekteszk.entities.User;
 
 @CrossOrigin
@@ -47,6 +48,17 @@ public class UserController {
     public ResponseEntity<Iterable<User>> getAll() {
         Iterable<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
+    }
+    
+    @GetMapping("/")
+    @Secured({ "ROLE_ADMIN" })
+    public ResponseEntity<User> getByName(@RequestParam(value="name") String name) {
+        Optional<User> oUser = userRepository.findByName(name);
+        if (!oUser.isPresent()) {
+            return ResponseEntity.notFound().build();   
+        }
+        
+        return ResponseEntity.ok(oUser.get());
     }
     
     @PostMapping("/register")

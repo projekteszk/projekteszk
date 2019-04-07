@@ -8,4 +8,5 @@ import projekteszk.entities.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     public Optional<User> findByName(String name);
+    public Optional<User> findByEmail(String email);
 }

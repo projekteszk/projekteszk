@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import projekteszk.entities.Ticket;
 import projekteszk.repositories.TicketRepository;
@@ -26,6 +27,17 @@ public class TicketController {
     @Secured({ "ROLE_ADMIN" })
     public ResponseEntity<Iterable<Ticket>> getAll() {
         return ResponseEntity.ok(ticketRepository.findAll());
+    }
+    
+    @GetMapping("/")
+    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
+    public ResponseEntity<Ticket> getBySpot(@RequestParam(value="spot") Integer spot) {
+        Optional<Ticket> oTicket = ticketRepository.findBySpot(spot);
+        if (!oTicket.isPresent()) {
+            return ResponseEntity.notFound().build();   
+        }
+        
+        return ResponseEntity.ok(oTicket.get());
     }
     
     @PostMapping("")

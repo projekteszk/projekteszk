@@ -43,7 +43,7 @@ public class SpotController {
         
         return ResponseEntity.ok(oSpot.get());
     }
-    
+       
     @GetMapping("")
     public ResponseEntity<Iterable<Spot>> getAll() {
         Iterable<Spot> spots = spotRepository.findAll();

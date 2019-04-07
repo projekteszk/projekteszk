@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import projekteszk.entities.Product;
 import projekteszk.repositories.ProductRepository;
@@ -27,6 +28,16 @@ public class ProductController {
         return ResponseEntity.ok(productRepository.findAll());
     }
     
+    @GetMapping("/")
+    public ResponseEntity<Product> getByName(@RequestParam(value="name") String name) {
+        Optional<Product> oProduct = productRepository.findByName(name);
+        if (!oProduct.isPresent()) {
+            return ResponseEntity.notFound().build();   
+        }
+        
+        return ResponseEntity.ok(oProduct.get());
+    }
+        
     @PostMapping("")
     @Secured({ "ROLE_ADMIN" })
     public ResponseEntity<Product> post(@RequestBody Product product) {
