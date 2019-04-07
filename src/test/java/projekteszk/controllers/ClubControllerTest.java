@@ -37,7 +37,7 @@ public class ClubControllerTest {
     public void testGetById() throws Exception {
         Club mockClub = new Club();
         mockClub.setId(1);
-        mockClub.setName("Teszt Klub 1");
+        mockClub.setName("Teszt Klub");
         mockClub.setShire("Hajdú-Bihar");
         
         Mockito.when(clubRepository.findById(Mockito.anyInt()))
@@ -58,7 +58,7 @@ public class ClubControllerTest {
     public void testGetByName() throws Exception {
         Club mockClub = new Club();
         mockClub.setId(1);
-        mockClub.setName("Teszt Klub 1");
+        mockClub.setName("Teszt Klub");
         mockClub.setShire("Hajdú-Bihar");
         
         Mockito.when(clubRepository.findByName(Mockito.anyString()))
@@ -83,7 +83,7 @@ public class ClubControllerTest {
         mockClub1.setShire("Hajdú-Bihar");
         
         Club mockClub2 = new Club();
-        mockClub2.setId(1);
+        mockClub2.setId(2);
         mockClub2.setName("Teszt Klub 2");
         mockClub2.setShire("Pest");
         
@@ -109,7 +109,7 @@ public class ClubControllerTest {
     public void testPost() throws Exception {
         Club mockClub = new Club();
         mockClub.setId(1);
-        mockClub.setName("Teszt Klub 1");
+        mockClub.setName("Teszt Klub");
         mockClub.setShire("Hajdú-Bihar");
         
         String inputInJson = this.mapToJson(mockClub);
@@ -135,7 +135,7 @@ public class ClubControllerTest {
     public void testPut() throws Exception {
         Club mockClub = new Club();
         mockClub.setId(1);
-        mockClub.setName("Teszt Klub 1");
+        mockClub.setName("Teszt Klub");
         mockClub.setShire("Hajdú-Bihar");
         
         String inputInJson = this.mapToJson(mockClub);
@@ -160,7 +160,7 @@ public class ClubControllerTest {
     public void testDelete() throws Exception {
         Club mockClub = new Club();
         mockClub.setId(1);
-        mockClub.setName("Teszt Klub 1");
+        mockClub.setName("Teszt Klub");
         mockClub.setShire("Hajdú-Bihar");
         
         Mockito.when(clubRepository.findById(Mockito.anyInt()))
