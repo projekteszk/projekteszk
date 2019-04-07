@@ -34,8 +34,8 @@ public class ClubController {
         return ResponseEntity.ok(oClub.get());
     }
     
-    @GetMapping("/")
-    public ResponseEntity<Club> getByName(@RequestParam(value="name") String name) {
+    @GetMapping("/search")
+    public ResponseEntity<Club> getByName(@RequestParam String name) {
         Optional<Club> oClub = clubRepository.findByName(name);
         if (!oClub.isPresent()) {
             return ResponseEntity.notFound().build();   
