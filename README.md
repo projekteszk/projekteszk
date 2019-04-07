@@ -185,15 +185,16 @@ Minden API végpont alakja **/api/{táblanév-kicsi-betűkkel}/** szöveg, melye
 | Végpont           | Típus  | Szükséges engedély | Leírás                                                   | 
 | ----------------- |:------:| ------------------ | -------------------------------------------------------- |
 | *semmi*           | GET    | ROLE_ADMIN         | Visszaadja az összes rendelést                           |
+| {user}            | GET    | ROLE_USER          | Visszaadja a felhasználó rendeléseitű                    |
 | *semmi*           | POST   | ROLE_USER          | A megadott rendelést felviszi az adatbázisba             |
-| {id}              | DELETE | ROLE_ADMIN         | Kitörli a megadott id-jű rendelést                       |
+| {id}              | DELETE | ROLE_USER          | Kitörli a megadott id-jű rendelést                       |
 
 #### Tickets
 
 | Végpont           | Típus  | Szükséges engedély | Leírás                                                   | 
 | ----------------- |:------:| ------------------ | -------------------------------------------------------- |
-| *semmi*           | GET    | ROLE_ADMIN         | Visszaadja az összes jegyet                              |
-| *semmi*           | POST   | ROLE_USER          | A megadott jegyet felviszi az adatbázisba                |
+| *semmi*           | GET    | ROLE_USER          | Visszaadja az összes jegyet                              |
+| *semmi*           | POST   | ROLE_ADMIN         | A megadott jegyet felviszi az adatbázisba                |
 | {id}              | DELETE | ROLE_ADMIN         | Kitörli a megadott id-jű jegyet                          |
 
 #### User
