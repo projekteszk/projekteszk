@@ -1,6 +1,6 @@
 # Projekt Eszközök beadandó
 
-[![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=dev)](https://travis-ci.com/madam97/projekteszk)
+[![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=master)](https://travis-ci.com/madam97/projekteszk)
 
 ## Mappa tartalma
 
