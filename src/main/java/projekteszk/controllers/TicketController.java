@@ -25,8 +25,8 @@ import projekteszk.repositories.TicketRepository;
 public class TicketController {
     @Autowired
     private TicketRepository ticketRepository;
-    @Autowired
-    private OrderRepository orderRepository;
+    //@Autowired
+    //private OrderRepository orderRepository;
     
     @GetMapping("")
     @Secured({ "ROLE_ADMIN", "ROLE_USER" })
@@ -49,11 +49,19 @@ public class TicketController {
             return ResponseEntity.notFound().build();   
         }
         
-        Iterable<Order> oOrder = orderRepository.findByTickets(oTicket.get());
+        /*
+        Iterable<Order> oOrder = orderRepository.findAll();
         Iterator<Order> it = oOrder.iterator();
         while(it.hasNext()){
-            orderRepository.delete(it.next());   
+            Order tmp = it.next();
+            for(int i=0; i<tmp.getTickets().size(); ++i) {
+                if(tmp.getTickets().get(i).equals(oTicket.get())){
+                    tmp.getTickets().remove(i);
+                    break;
+                }
+            }
         }
+        */
             
         ticketRepository.delete(oTicket.get());
         return ResponseEntity.ok().build();

@@ -2,6 +2,7 @@ package projekteszk.controllers;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,10 +22,13 @@ import projekteszk.repositories.UserRepository;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
+    //@Autowired
+    //private UserRepository userRepository;
+    
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private UserRepository userRepository;
+    
+    
     
     @GetMapping("")
     @Secured({ "ROLE_ADMIN" })
@@ -32,6 +36,7 @@ public class OrderController {
         return ResponseEntity.ok(orderRepository.findAll());
     }
     
+    /*
     @GetMapping("/{username}")
     @Secured({ "ROLE_USER" })
     public ResponseEntity<Iterable<Order>> get(@PathVariable String username) {
@@ -45,6 +50,7 @@ public class OrderController {
         Iterable<Order> orders = orderRepository.findByUser(oUser.get());
         return ResponseEntity.ok(orders);
     }
+    */
     
     @PostMapping("")
     @Secured({ "ROLE_ADMIN", "ROLE_USER" })
