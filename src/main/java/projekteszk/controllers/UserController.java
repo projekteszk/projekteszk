@@ -50,9 +50,9 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
     
-    @GetMapping("/")
+    @GetMapping("/search")
     @Secured({ "ROLE_ADMIN" })
-    public ResponseEntity<User> getByName(@RequestParam(value="name") String name) {
+    public ResponseEntity<User> getByName(@RequestParam String name) {
         Optional<User> oUser = userRepository.findByName(name);
         if (!oUser.isPresent()) {
             return ResponseEntity.notFound().build();   
@@ -69,7 +69,7 @@ public class UserController {
         }
         user.setId(null);
         user.setPass(passwordEncoder().encode(user.getPass()));
-        user.setRole(oUser.get().getRole());
+        user.setRole(User.Role.ROLE_USER);
         return ResponseEntity.ok(userRepository.save(user));
     }
     
