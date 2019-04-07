@@ -122,6 +122,37 @@ public class UserControllerTest {
     }
     
     @Test
+    public void testPatchToAdmin() throws Exception {
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setRole(User.Role.ROLE_USER);
+        mockUser.setName("Teszt User");
+        mockUser.setPass("pass");
+        mockUser.setEmail("user@email.com");
+        mockUser.setPhone("06301234567");
+        mockUser.setAddress("1000 Teszt, Teszt utca 1.");
+        
+        Mockito.when(userRepository.findById(Mockito.anyInt()))
+               .thenReturn(Optional.of(mockUser));
+        
+        mockUser.setRole(User.Role.ROLE_ADMIN);
+        
+        String inputInJson = this.mapToJson(mockUser);
+        
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .patch("/api/users/1/to-admin")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(inputInJson)
+                .contentType(MediaType.APPLICATION_JSON);
+        
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        String outputInJson = response.getContentAsString();
+        
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+            
+    @Test
     public void testPut() throws Exception {
         User mockUser = new User();
         mockUser.setId(1);
