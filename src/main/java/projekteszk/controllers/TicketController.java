@@ -49,7 +49,7 @@ public class TicketController {
             return ResponseEntity.notFound().build();   
         }
         
-        Iterable<Order> oOrder = orderRepository.findByTicket(oTicket.get());
+        Iterable<Order> oOrder = orderRepository.findByTickets(oTicket.get());
         Iterator<Order> it = oOrder.iterator();
         while(it.hasNext()){
             orderRepository.delete(it.next());   
