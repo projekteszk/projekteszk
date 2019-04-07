@@ -1,5 +1,6 @@
 package projekteszk.controllers;
 
+import java.util.Iterator;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import projekteszk.entities.Order;
 import projekteszk.entities.Ticket;
+import projekteszk.repositories.OrderRepository;
 import projekteszk.repositories.TicketRepository;
 
 @CrossOrigin
@@ -22,22 +25,13 @@ import projekteszk.repositories.TicketRepository;
 public class TicketController {
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     
     @GetMapping("")
-    @Secured({ "ROLE_ADMIN" })
+    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
     public ResponseEntity<Iterable<Ticket>> getAll() {
         return ResponseEntity.ok(ticketRepository.findAll());
-    }
-    
-    @GetMapping("/")
-    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
-    public ResponseEntity<Ticket> getBySpot(@RequestParam(value="spot") Integer spot) {
-        Optional<Ticket> oTicket = ticketRepository.findBySpot(spot);
-        if (!oTicket.isPresent()) {
-            return ResponseEntity.notFound().build();   
-        }
-        
-        return ResponseEntity.ok(oTicket.get());
     }
     
     @PostMapping("")
@@ -53,6 +47,12 @@ public class TicketController {
         Optional<Ticket> oTicket = ticketRepository.findById(id);
         if (!oTicket.isPresent()) {
             return ResponseEntity.notFound().build();   
+        }
+        
+        Iterable<Order> oOrder = orderRepository.findByTicket(oTicket.get());
+        Iterator<Order> it = oOrder.iterator();
+        while(it.hasNext()){
+            orderRepository.delete(it.next());   
         }
             
         ticketRepository.delete(oTicket.get());
