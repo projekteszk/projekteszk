@@ -4,7 +4,7 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 
-deploy:
+after_success:
   - snyk monitor
 
 cache:

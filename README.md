@@ -1,7 +1,7 @@
 # Projekt Eszközök beadandó
 
 [![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=master)](https://travis-ci.com/madam97/projekteszk)
-[![][snyk img]][snyk]
+[![Known Vulnerabilities](https://snyk.io/test/github/madam97/projekteszk/badge.svg)](https://snyk.io/test/github/madam97/projekteszk)
 
 ## Mappa tartalma
 
