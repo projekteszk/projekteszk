@@ -4,6 +4,12 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 
+install:
+  - snyk test
+
+after_success:
+  - snyk monitor
+
 cache:
   directories:
   - $HOME/.m2
