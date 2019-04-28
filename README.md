@@ -1,6 +1,6 @@
 # Projekt Eszközök beadandó
 
-[![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=master)](https://travis-ci.com/madam97/projekteszk)
+[![Build Status](https://travis-ci.com/madam97/projekteszk.svg?branch=master)](https://travis-ci.org/madam97/projekteszk)
 [![Known Vulnerabilities](https://snyk.io/test/github/madam97/projekteszk/badge.svg)](https://snyk.io/test/github/madam97/projekteszk)
 
 [Doxygen dokumentáció](https://madam97.github.io/projekteszk/)
