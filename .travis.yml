@@ -10,7 +10,9 @@ after_success:
 cache:
   directories:
   - $HOME/.m2
- 
+
+# Doxyfile
+
 # This will run on Travis' 'new' container-based infrastructure
 sudo: false 
 
