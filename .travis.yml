@@ -4,6 +4,9 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 
+install:
+  - npm install -g snyk
+
 after_success:
   - snyk monitor
 
